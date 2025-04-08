@@ -1,0 +1,13 @@
+h1 {
+  color: orange;
+}
+
+div.contents{
+  color: black;
+  background-color: orange;
+  width: fit-content;
+}
+
+#padding_add{
+  padding-left: 120px;
+}

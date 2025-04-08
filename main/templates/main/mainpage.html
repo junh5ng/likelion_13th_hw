@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<img src="{% static 'images/junhong.png' %}" alt="mine" width="100px">
+<h1 class="contents">아기사자 박준홍 2주차 과제</h1>
+<div class="contents">개인 프로젝트 만들기!</div>
+<h3>- 2주차 세션 내용 정리</h3>
+<div>1) 세션 준비 및 서버 연결</div>
+<ol>
+  <li>개인 로컬 작업공간 VS Code에서 열기</li>
+  <li>가상환경 켜기 (pipenv shell)</li>
+  <li>서버 연결하기 (python manage.py runserver)</li>
+</ol>
+
+<div>2) Template(html, view, url) 학습</div>
+<ul>
+  <li>Templates를 쓰는 이유: 유저에게 제공할 파일의 구조나 레이아웃을 한 데 모아 관리가 가능!</li>
+  <li>어떻게 Templates를 사용할까? main 앱 안에 templates 폴더 생성하고, 앱 이름과 동일한 폴더 생성</li>
+  <li>원하는 url을 통해 방금 작성한 page가 보여지게 하기 위해서 Views.py를 통해 해당 page가 렌더링 될 수 있도록 함수 작성 필요!</li>
+</ul>
+
+<div>3) Template 언어</div>
+<ul>
+  <li>파이썬의 변수, 문법을 html에서 사용할 수 있도록 제공하는 직관적인 언어</li>
+  <li>크게 변수, 태그, 필터, 주석과 같은 4가지 주요 기능을 제공</li>
+</ul>
+
+<div>4) 효율적인 코드</div>
+<ul>
+  <li>효율적인 코드는 반복되는 코드를 템플릿을 통해 분리하는 것!</li>
+  <li>메뉴 바(nav bar)와 같은 반복되는 코드를 분리해 template 상속을 사용!</li>
+  <div>Template 상속 용어 정리</div>
+  <ol>
+    <li>block: 다른 파일에서 재사용 가능한 html 코드 정의</li>
+    <li>{# {% block content %}: 재사용 가능한 블록 범위 지정 #}</li>
+    <li>{# {% endblock %}: 블록의 끝. 'block content'와 짝을 이룸 #}</li>
+  </ol>
+  <li>templates 폴더 내에 shared 폴더를 생성하고 그 안에 template 상속할 파일을 생성!</li>
+</ul>
+
+<div>5) static</div>
+<ul>
+  <li>웹 페이지에서 사용되는 정적인 파일을 저장하는 디렉토리 Ex) CSS & image</li>
+  <li>크게 변수, 태그, 필터, 주석과 같은 4가지 주요 기능을 제공</li>
+  <div>static 사용 방법</div>
+  <ol>
+    <li>project 폴더에 static 폴더 생성</li>
+    <li>static 폴더 내에 css, images 폴더 생성</li>
+    <li>css 폴더 내에 project.css 파일 생성</li>
+  </ol>
+</ul>
+
+{% endblock %}
