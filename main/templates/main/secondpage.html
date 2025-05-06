@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
 
-<h1 class="contents">2주차 과제 Second Page</h1>
-<div class="contents">제 소개를 해보겠습니다...</div>
+<h1 class="contents">2025 멋쟁이사자처럼 13기</h1>
+<div class="contents">This is Second Page</div>
 
-<img style="float:left" src="{% static 'images/picture.jpg' %}" alt="picture" width="100px">
-<div id="padding_add">
-  <br>
-<h3>🦁 자기소개 🦁</h3>
-<ul> 
-  <li>이름: 박준홍</li>
-  <li>학과: 컴퓨터공학전공</li>
-  <li>좋아하는 카페: 섹터커피(SECTOR COFFEE)</li>
-  <li>TMI: 오늘 7시에 김진우 선배랑 이정진 성배랑 김치만 먹으러 갑니다.</li>
-</ul>
+<h1>게시글 목록</h1>
+<hr>
+<div class="post-list">
+  {% if posts %}
+    {% for post in posts %}
+      <div class="post-card">
+        <h3>{{ post.title }}</h3>
+        <p class="meta">{{ post.author }} | {{ post.category }}</p>
+        <p class="body">{{ post.body }}</p>
+        <a href="{% url 'main:detail' post.id %}" class="detail-link">자세히 보기</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>아직 게시글이 없습니다.</p>
+    <a href="{% url 'main:new-post' %}" class="write-link">글 작성하기</a>
+  {% endif %}
 </div>
 
 {% endblock %}
