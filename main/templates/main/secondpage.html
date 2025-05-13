@@ -2,7 +2,6 @@
 {% block content %}
 
 <h1 class="contents">2025 멋쟁이사자처럼 13기</h1>
-<div class="contents">This is Second Page</div>
 
 <h1>게시글 목록</h1>
 <hr>
@@ -18,8 +17,9 @@
     {% endfor %}
   {% else %}
     <p>아직 게시글이 없습니다.</p>
-    <a href="{% url 'main:new-post' %}" class="write-link">글 작성하기</a>
-  {% endif %}
+    {% endif %}
+    <hr>
+  <a href="{% url 'main:new-post' %}" class="write-link">글 작성하기</a>  
 </div>
 
 {% endblock %}
