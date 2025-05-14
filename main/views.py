@@ -4,7 +4,7 @@ from .models import *
 
 # Create your views here.
 
-print(Post.objects.all())
+# print(Post.objects.all())
 
 def mainpage(request):
   return render(request, 'main/mainpage.html')
