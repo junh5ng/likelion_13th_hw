@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import *
+import re
 
 # Create your views here.
 
@@ -43,14 +44,14 @@ def detail(request, id):
     new_comment = Comment()
     new_comment.post = post
     new_comment.author=request.user
-    new_comment.content = request.POST['content']
+    new_comment.body = request.POST['content']
     new_comment.save()
     return redirect('main:detail', id)
 
 def delete_comment(request, comment_id):
   comment = get_object_or_404(Comment, pk=comment_id)
 
-  if request.user.is_authenticated and request.user == comment.author:
+  if request.user == comment.author:
     comment.delete()
 
   return redirect('main:detail', comment.post.id)
@@ -64,12 +65,27 @@ def create(request):
   if request.user.is_authenticated:
     new_post = Post()
     new_post.title = request.POST['title']
-    new_post.author = request.POST['author']
+    # new_post.author = request.POST['author']
+    new_post.author = request.user
     new_post.body = request.POST['body']
     new_post.category = request.POST['category']
     new_post.image = request.FILES.get('image')
     
     new_post.save()
+
+    #본문을 띄어쓰기 + 엔터 기준으로 나누기
+    words = re.split(r'\s+', new_post.body)
+
+    tag_list = []
+    # 나눈 단어가 '#'으로 시작한다면 tag_list에 저장
+    for w in words:
+      if len(w)>0:
+        if w[0] == '#':
+          tag_list.append(w[1:])
+          for t in tag_list:
+            tag, boolean = Tag.objects.get_or_create(name=t)
+            new_post.tags.add(tag.id)
+
     return redirect('main:detail', new_post.id)
   else:
     return redirect('accounts:login')
@@ -78,13 +94,27 @@ def update(request, id):
   update_post = Post.objects.get(pk=id)
   if request.user.is_authenticated and request.user == update_post.author:
     update_post.title = request.POST['title']
-    update_post.author = request.POST['author']
+    # update_post.author = request.POST['author']
     update_post.body = request.POST['body']
     update_post.category = request.POST['category']
     
     if request.FILES.get('image'):
       update_post.image = request.FILES.get('image')
     update_post.save()
+
+    #본문을 띄어쓰기 + 엔터 기준으로 나누기
+    words = re.split(r'\s+', update_post.body)
+
+    tag_list = []
+    # 나눈 단어가 '#'으로 시작한다면 tag_list에 저장
+    for w in words:
+      if len(w)>0:
+        if w[0] == '#':
+          tag_list.append(w[1:])
+          for t in tag_list:
+            tag, boolean = Tag.objects.get_or_create(name=t)
+            update_post.tags.add(tag.id)
+
     return redirect('main:detail', update_post.id)
   return redirect('accounts:login', update_post.id)
 
@@ -92,3 +122,15 @@ def delete(request, id):
   delete_post = Post.objects.get(pk=id)
   delete_post.delete()
   return redirect('main:secondpage')
+
+def tag_list(request): #모든 태그 목록을 볼 수 있는 페이지
+    tags = Tag.objects.all()
+    return render(request, 'main/tag-list.html', {'tags': tags})
+
+def tag_posts(request, tag_id): #특정 태그를 가진 게시글의 목록을 볼 수 있는 페이지
+    tag=get_object_or_404(Tag, id=tag_id)
+    posts=tag.posts.all()
+    return render(request, 'main/tag-post.html', {
+        'tag' : tag,
+        'posts' : posts
+    })

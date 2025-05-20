@@ -5,6 +5,13 @@
   작성자 : {{post.author}}<br>
   분류 : {{post.category}}<br>
   <hr/>
+
+  <p>
+    {% for tag in post.tags.all %}
+      <a href="{% url 'main:tag-posts' tag.id %}">#{{tag.name}}</a>
+    {% endfor %}  
+  </p>
+
   {% if post.image %}
     <p><img src="{{ post.image.url }}" alt="미디어" width="80px"></p>
   {% endif %}
@@ -23,17 +30,18 @@
       </form>
     </div>
     <div class="comment_list">
-      {% for comment in comments %}
+    {% for comment in comments %}
       <hr>
       <h4>작성자 : {{comment.author}}</h4>
-      <p>내용 : {{comment.content}}</p>
-      {% endfor %}
+      <p>내용 : {{comment.body}}</p>
+    
       {% if comment.author == user %}
       <form action="{% url 'main:comment_delete' comment.id %}" method="POST" style="display:inline;">
         {% csrf_token %}
         <button type="submit">삭제</button>
       </form>
-    {% endif %}
+      {% endif %}
     </div>
+    {% endfor %}
   </div>
 {% endblock %}
