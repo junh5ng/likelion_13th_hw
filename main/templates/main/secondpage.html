@@ -19,7 +19,10 @@
     <p>아직 게시글이 없습니다.</p>
     {% endif %}
     <hr>
-  <a href="{% url 'main:new-post' %}" class="write-link">글 작성하기</a>  
+  <div>
+    {% if user.is_authendicated %}
+    <a href="{% url 'main:new-post' %}">새 글 작성하기</a>
+    {% endif %}  
 </div>
 
 {% endblock %}

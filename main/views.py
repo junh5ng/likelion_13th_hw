@@ -44,26 +44,32 @@ def edit(request, id):
 
 
 def create(request):
-  new_post = Post()
-  new_post.title = request.POST['title']
-  new_post.author = request.POST['author']
-  new_post.body = request.POST['body']
-  new_post.category = request.POST['category']
-  new_post.image = request.FILES.get('image')
-  
-  new_post.save()
-  return redirect('main:detail', new_post.id)
+  if request.user.is_authenticated:
+    new_post = Post()
+    new_post.title = request.POST['title']
+    new_post.author = request.POST['author']
+    new_post.body = request.POST['body']
+    new_post.category = request.POST['category']
+    new_post.image = request.FILES.get('image')
+    
+    new_post.save()
+    return redirect('main:detail', new_post.id)
+  else:
+    return redirect('accounts:login')
 
 def update(request, id):
   update_post = Post.objects.get(pk=id)
-  update_post.title = request.POST['title']
-  update_post.author = request.POST['author']
-  update_post.body = request.POST['body']
-  update_post.category = request.POST['category']
-  update_post.image = request.FILES.get('image')
-
-  update_post.save()
-  return redirect('main:detail', update_post.id)
+  if request.user.is_authenticated and request.user == update_post.author:
+    update_post.title = request.POST['title']
+    update_post.author = request.POST['author']
+    update_post.body = request.POST['body']
+    update_post.category = request.POST['category']
+    
+    if request.FILES.get('image'):
+      update_post.image = request.FILES.get('image')
+    update_post.save()
+    return redirect('main:detail', update_post.id)
+  return redirect('accounts:login', update_post.id)
 
 def delete(request, id):
   delete_post = Post.objects.get(pk=id)
