@@ -9,8 +9,31 @@
     <p><img src="{{ post.image.url }}" alt="미디어" width="80px"></p>
   {% endif %}
   <p>{{post.body}}</p>
-  {% if blog.author == user%}
+  {% if post.author == user%}
   <a href="{% url 'main:edit' post.id %}">글 수정하기</a>
   <a href="{% url 'main:delete' post.id %}">삭제하기</a>
   {% endif %}
+  <div class="comment_container">
+    <div class="comment_form">
+      <h2></h2>
+      <form action="{% url 'main:detail' post.id %}"method="POST">
+          {% csrf_token %}
+          댓글 쓰기 : <input type="text" name="content">
+          <input type="submit" name="submit">
+      </form>
+    </div>
+    <div class="comment_list">
+      {% for comment in comments %}
+      <hr>
+      <h4>작성자 : {{comment.author}}</h4>
+      <p>내용 : {{comment.content}}</p>
+      {% endfor %}
+      {% if comment.author == user %}
+      <form action="{% url 'main:comment_delete' comment.id %}" method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+      </form>
+    {% endif %}
+    </div>
+  </div>
 {% endblock %}

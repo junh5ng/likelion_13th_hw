@@ -15,3 +15,11 @@ class Post(models.Model):
   
   def summary(self):
     return self.body[:10]
+  
+class Comment(models.Model):
+    body = models.TextField()
+    author = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE)
+
+    def str (self):
+      return self.blog.title + " : " + self.content[:20] + "by" + self.author.profile.nicknam

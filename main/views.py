@@ -34,9 +34,26 @@ def new_post(request):
 
 
 def detail(request, id):
-    post = get_object_or_404(Post, pk=id)
-    return render(request, 'main/detail.html', {'post': post})
+  post = get_object_or_404(Post, pk=id)
+  if request.method == 'GET':
+    comments = Comment.objects.filter(post=post)
+    return render(request, 'main/detail.html', {'post':post, 'comments': comments})
+  
+  elif request.method == 'POST':
+    new_comment = Comment()
+    new_comment.post = post
+    new_comment.author=request.user
+    new_comment.content = request.POST['content']
+    new_comment.save()
+    return redirect('main:detail', id)
 
+def delete_comment(request, comment_id):
+  comment = get_object_or_404(Comment, pk=comment_id)
+
+  if request.user.is_authenticated and request.user == comment.author:
+    comment.delete()
+
+  return redirect('main:detail', comment.post.id)
 
 def edit(request, id):
     edit_post = Post.objects.get(pk=id)

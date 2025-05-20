@@ -11,5 +11,6 @@ urlpatterns = [
   path('<int:id>', detail, name="detail"),
   path('edit/<int:id>', edit, name="edit"),
   path('update/<int:id>', update, name="update"),
-  path('delete/<int:id>', delete, name="delete")
+  path('delete/<int:id>', delete, name="delete"),
+  path('comment/delete/<int:comment_id>/', delete_comment, name='comment_delete'),
 ]
