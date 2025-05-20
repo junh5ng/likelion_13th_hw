@@ -103,6 +103,8 @@ def update(request, id):
     update_post.save()
 
     #본문을 띄어쓰기 + 엔터 기준으로 나누기
+    update_post.tags.clear()
+
     words = re.split(r'\s+', update_post.body)
 
     tag_list = []
