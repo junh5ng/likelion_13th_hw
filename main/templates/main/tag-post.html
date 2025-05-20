@@ -10,7 +10,7 @@
     <h3>{{p.title}}</h3>
     {{p.author}}<br>
     {{p.summary}}
-    <a href="{% url 'main:detail' b.id %}">자세히 보기</a>
+    <a href="{% url 'main:detail' p.id %}">자세히 보기</a>
     <br>
     {% endfor %}
   </div>
