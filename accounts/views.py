@@ -33,11 +33,10 @@ def signup(request):
         username=request.POST['username'],
         password=request.POST['password']
       )
-      nickname=request.POST['nickname']
-      major=request.POST['major']
-      phone_number=request.POST['phone_number']
-      intro=request.POST['intro']
-      
+      # nickname=request.POST['nickname']
+      # major=request.POST['major']
+      # phone_number=request.POST['phone_number']
+      # intro=request.POST['intro']
 
       profile = Profile(user=user, nickname=nickname, major=major, phone_number=phone_number, intro=intro)
       profile.save()  

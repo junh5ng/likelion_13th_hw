@@ -2,29 +2,21 @@
 {% load static %}
 
 {% block content %}
-<h1>{{user.profile.nickname}}님의 마이페이지</h1>
+User : {{user}} <br>
+UserProfile : {{user.profile}} <br>
 
-<h3>학과: {{user.profile.major}}</h3>
-<h3>전화번호: {{user.profile.phone_number}}</h3>
-<h3>자기소개: {{user.profile.intro}}</h3>
+<p>팔로워<br>{{ user.profile.followers.count}}명</p>
+<p>팔로잉<br>{{ user.profile.followings.count}}명</p>
 
-<hr>
-<h3>내가 작성한 글 목록</h3>
-
-<div class="post-list">
-  {% if posts %}
-    {% for post in posts %}
-      <div class="post-card">
-        <h3>{{ post.title }}</h3>
-        <p class="meta">{{ post.author }} | {{ post.created_at }}</p>
-        <p class="body">{{ post.content|slice:":100" }}...</p>
-        <a href="{% url 'main:detail' post.id %}" class="detail-link">자세히 보기</a>
-      </div>
-    {% endfor %}
+{% if request.user != user %}
+  {% if request.user.profile in user.profile.followers.all %}
+    <a href="{% url 'users:follow' user.id %}">
+      <button type="button" class="btn btn-outline-info">언팔로우</button>
+    </a>
   {% else %}
-    <p>아직 작성한 글이 없습니다.</p>
-    <a href="{% url 'main:new-post' %}" class="write-link">글 작성하기</a>
+    <a href="{% url 'users:follow' user.id %}">
+      <button type="button" class="btn btn-info">팔로우</button>
+    </a>
   {% endif %}
-</div>
-
+{% endif %}
 {% endblock %}
