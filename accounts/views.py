@@ -38,8 +38,8 @@ def signup(request):
       # phone_number=request.POST['phone_number']
       # intro=request.POST['intro']
 
-      profile = Profile(user=user, nickname=nickname, major=major, phone_number=phone_number, intro=intro)
-      profile.save()  
+      # profile = Profile(user=user, nickname=nickname, major=major, phone_number=phone_number, intro=intro)
+      # profile.save()  
 
       auth.login(request, user)
       return redirect('/')
